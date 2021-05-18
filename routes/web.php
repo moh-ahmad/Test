@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ProjectsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,10 +18,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Auth::routes();
+Route::get('/members', function () {
+    return view('members');
+});
+
+Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/tasks', [App\Http\Controllers\TasksController::class, 'index']);
+Route::get('/tasks', [App\Http\Controllers\TasksController::class, 'index'])->middleware('auth');
 
-Route::get('/projects', [App\Http\Controllers\ProjectsController::class, 'index']);
+Route::resource('/projects', ProjectsController::class)->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
